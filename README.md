@@ -1,2 +1,2 @@
 # Mark5
-Jugend forscht Projekt Die smarte Pflanze
+Jugend forscht Projekt "Die smarte Pflanze"
