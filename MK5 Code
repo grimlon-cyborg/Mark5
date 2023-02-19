@@ -1,0 +1,136 @@
+#include "thingProperties.h"
+
+
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+// Data wire is conntec to the Arduino digital pin 4
+#define ONE_WIRE_BUS 4
+
+// Setup a oneWire instance to communicate with any OneWire devices
+OneWire oneWire(ONE_WIRE_BUS);
+
+// Pass our oneWire reference to Dallas Temperature sensor 
+DallasTemperature sensors(&oneWire);
+
+
+int Luftqualitaet = 10; // Declare and initialize the variable
+int Bodenfeuchte = 11; 
+int Licht_1 = 4; 
+int Licht_2 = 5; 
+
+
+
+
+void setup() {
+  // Initialize serial and wait for port to open:
+  Serial.begin(9600);
+  // This delay gives the chance to wait for a Serial Monitor without blocking if none is found
+  delay(1500); 
+
+  // Defined in thingProperties.h
+  initProperties();
+
+  // Connect to Arduino IoT Cloud
+  ArduinoCloud.begin(ArduinoIoTPreferredConnection);
+  
+   sensors.begin();
+  
+  /*
+     The following function allows you to obtain more information
+     related to the state of network and IoT Cloud connection and errors
+     the higher number the more granular information you’ll get.
+     The default is 0 (only errors).
+     Maximum is 4
+ */
+  setDebugMessageLevel(2);
+  ArduinoCloud.printDebugInfo();
+  
+    pinMode( 10 , INPUT);       // Pin 0 dient nun als Input
+    pinMode( 11 , INPUT);
+    pinMode( 4 , INPUT); 
+    pinMode( 5 , INPUT); 
+
+}
+
+void loop() {
+  ArduinoCloud.update();
+
+   Luftqualitaet = analogRead(A1);              // Zuerst wird der Wert am Pin A0 ausgelesen...
+         
+      
+      Serial.print("Der erfasste Luftqualitaet Wert lautet : "); 
+      Serial.println(Luftqualitaet, DEC);         //... und anschließend im seriellen Monitor als Dezimalzahl ausgegeben.
+      Serial.println();
+      
+  Bodenfeuchte = analogRead(A2);              // Zuerst wird der Wert am Pin A0 ausgelesen...
+ 
+  Serial.print("Der erfasste Bodenfeuchte Wert lautet : "); 
+ Serial.println(Bodenfeuchte, DEC);         //... und anschließend im seriellen Monitor als Dezimalzahl ausgegeben.
+  Serial.println();
+  
+  Licht_1 = analogRead(A3);              // Zuerst wird der Wert am Pin A0 ausgelesen...
+ 
+  Serial.print("Der erfasste Licht_1 Wert lautet : "); 
+ Serial.println(Licht_1, DEC);         //... und anschließend im seriellen Monitor als Dezimalzahl ausgegeben.
+  Serial.println();
+  
+  Licht_2 = analogRead(A4);              // Zuerst wird der Wert am Pin A0 ausgelesen...
+ 
+  Serial.print("Der erfasste Licht_2 Wert lautet : "); 
+ Serial.println(Licht_2, DEC);         //... und anschließend im seriellen Monitor als Dezimalzahl ausgegeben.
+  Serial.println();
+ 
+  sensors.requestTemperatures(); 
+  
+  Serial.print("Celsius temperature: ");
+  // Why "byIndex"? You can have more than one IC on the same bus. 0 refers to the first IC on the wire
+  Serial.print(sensors.getTempCByIndex(0)); 
+  
+  delay(1000);          
+  
+}
+
+
+/*
+  Since Luftqualitaet is READ_WRITE variable, onLuftqualitaetChange() is
+  executed every time a new value is received from IoT Cloud.
+*/
+void onLuftqualitaetChange()  {
+  
+  // Add your code here to act upon Luftqualitaet change
+  
+
+}
+
+
+
+
+/*
+  Since Bodenfeuchte is READ_WRITE variable, onBodenfeuchteChange() is
+  executed every time a new value is received from IoT Cloud.
+*/
+void onBodenfeuchteChange()  {
+  // Add your code here to act upon Bodenfeuchte change
+}
+/*
+  Since Licht1 is READ_WRITE variable, onLicht1Change() is
+  executed every time a new value is received from IoT Cloud.
+*/
+void onLicht1Change()  {
+  // Add your code here to act upon Licht1 change
+}
+/*
+  Since Licht2 is READ_WRITE variable, onLicht2Change() is
+  executed every time a new value is received from IoT Cloud.
+*/
+void onLicht2Change()  {
+  // Add your code here to act upon Licht2 change
+}
+/*
+  Since Temperatur is READ_WRITE variable, onTemperaturChange() is
+  executed every time a new value is received from IoT Cloud.
+*/
+void onTemperaturChange()  {
+  // Add your code here to act upon Temperatur change
+}
