@@ -37,9 +37,9 @@ void loop() {
 
   delay(333);
 
-  if (Ausgabe) Serial.println("----------------- loop() ----------------------- v8");
+  if (Ausgabe) Serial.println("----------------- loop() ----------------------- v9");
 
-  webText = "v8";
+  webText = "v9";
 
   ArduinoCloud.update();
 
